@@ -1,3 +1,3 @@
-Source materials for work shop 
+Матеріали по курсу 
 
-### Modern Swift APP swiftly 
+### Swift з нуля
