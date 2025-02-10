@@ -3,10 +3,15 @@ import Foundation
 // Квадратне рівняння
 func solveSquareEqution (a: Double, b: Double, c:Double) -> String {
     let d = b * b - 4 * a * c
+    
+    guard d >= 0 else {
+        return "Коренів немає"
+    }
+    
     let x1 = ( -b + sqrt(d) ) / (2 * a)
     let x2 = ( -b - sqrt(d) ) / (2 * a)
     
-    let conditionDescription = "Квадратне рівняння: \"\(a)x² + \(b) + \(c) = 0\""
+    let conditionDescription = "Квадратне рівняння: \"\(a)x² + \(b)х + \(c) = 0\""
     let resolution = "корені: \nx₁= \(x1)\nx₂= \(x2)"
     
     return conditionDescription + "\n" + resolution
@@ -14,8 +19,8 @@ func solveSquareEqution (a: Double, b: Double, c:Double) -> String {
 
 // Площа циліндра
 func solveCylinderArea (r: Double, h: Double) -> String{
-    let pi = 3.14
-    let s = 2 * pi * r * r + 2 * pi * r * h
+
+    let s = 2 * .pi * r * r + 2 * .pi * r * h
     
     let conditionDescription = "Радіус: \(r), Висота: \(h) "
     let cylinderArea = "Площа циліндра: \(s)"
