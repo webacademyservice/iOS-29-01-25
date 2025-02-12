@@ -23,9 +23,7 @@ struct ContentView: View {
             .background(Color.blue)
             .cornerRadius(10)
             
-            //Image(systemName:"search")
-            
-            Image("boat.jpg")
+            Image("boat")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 200, height: 200)
@@ -38,9 +36,10 @@ struct ContentView: View {
         Spacer()
         
         HStack {
-            Image(systemName: "search")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+            Image("light")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100, height: 100)
             Text("Push this button")
             Button("Nothing") {
             }
