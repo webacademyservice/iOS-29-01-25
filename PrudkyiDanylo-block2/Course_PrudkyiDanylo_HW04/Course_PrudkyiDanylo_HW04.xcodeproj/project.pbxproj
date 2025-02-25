@@ -11,14 +11,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1C535F782D5DF9450037F795 /* Course_PrudkyiDanylo_HW04 */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Course_PrudkyiDanylo_HW04;
-			sourceTree = "<group>";
-		};
 		1C535F9C2D5E36BE0037F795 /* Extension */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		1C535FFA2D6CB9C10037F795 /* Course_PrudkyiDanylo_HW04 */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Course_PrudkyiDanylo_HW04;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -37,7 +37,7 @@
 		1C535F6D2D5DF9450037F795 = {
 			isa = PBXGroup;
 			children = (
-				1C535F782D5DF9450037F795 /* Course_PrudkyiDanylo_HW04 */,
+				1C535FFA2D6CB9C10037F795 /* Course_PrudkyiDanylo_HW04 */,
 				1C535F9C2D5E36BE0037F795 /* Extension */,
 				1C535F772D5DF9450037F795 /* Products */,
 			);
@@ -67,8 +67,8 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				1C535F782D5DF9450037F795 /* Course_PrudkyiDanylo_HW04 */,
 				1C535F9C2D5E36BE0037F795 /* Extension */,
+				1C535FFA2D6CB9C10037F795 /* Course_PrudkyiDanylo_HW04 */,
 			);
 			name = Course_PrudkyiDanylo_HW04;
 			packageProductDependencies = (
