@@ -8,38 +8,101 @@
 import SwiftUI
 
 struct MainView: View {
-    @State private var isRefreshing = false
+    @StateObject var viewModel = MainViewModel()
+    @State var query: String = ""
+    @State var selectedMonth: String = feb
     var body: some View {
-        let calendar: [Int: String] = [1: withFriends, 2: buyProducts, 3: homeWork, 4: watchingMovies, 5: goToTheGym, 12: attendLecture, 16: goToTheGym, 22: withFriends, 23: studySwift]
-        VStack {
+        VStack(alignment: .leading) {
             Text("Розклад на місяць")
-                .font(.largeTitle)
+                .font(.title)
+                .bold()
                 .padding()
             
-            ScrollView {
-                VStack(alignment: .leading) {
-                    ForEach(1...30, id: \ .self) { day in
-                        HStack {
-                            Text("День \(day)")
-                            
-                            Spacer()
-                            
-                                .font(.headline)
-                                .frame(width: 100, alignment: .leading)
-                            Text(calendar[day] ?? "Немає планів")
-                                .font(.body)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    TextField("Введіть місяць", text: $query)
                         .padding()
-                    }
+                        .background(Color.gray.opacity(0.5))
+                        .cornerRadius(16)
+                        .onChange(of: query) { newValue in
+                            
+                            if isValidMonth(newValue) {
+                                selectedMonth = newValue
+                            }
+                        }
                 }
             }
+            .padding()
+            
+            
+            Text("Події на \(selectedMonth)")
+                .font(.headline)
+                .padding(.horizontal)
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    let monthEvents = viewModel.events.filter { $0.dateEvent.month == selectedMonth }
+                    
+                    if monthEvents.isEmpty {
+                        Text("Немає подій на цей місяць")
+                            .padding()
+                            .foregroundColor(.gray)
+                    } else {
+                        ForEach(groupEventsByDay(events: monthEvents), id: \.key) { day, events in
+                            VStack(alignment: .leading) {
+                                Text("День \(day)")
+                                    .font(.headline)
+                                    .padding(.horizontal)
+                                
+                                ForEach(events) { event in
+                                    ForEach(event.nameEvent, id: \.self) { name in
+                                        HStack {
+                                            Text("•")
+                                            Text(name)
+                                                .padding(.vertical, 4)
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+                            .padding(.vertical, 8)
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(8)
+                            .padding(.horizontal)
+                        }
+                    }
+                }
+                .padding(.vertical)
+            }
         }
+    }
+    
+    
+    private func isValidMonth(_ month: String) -> Bool {
+        let validMonths = [jan, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec]
+        return validMonths.contains(month)
+    }
+    
+    
+    private func groupEventsByDay(events: [ListEvents]) -> [(key: Int, value: [ListEvents])] {
+        
+        var eventsByDay: [Int: [ListEvents]] = [:]
+        
+        for event in events {
+            let day = event.dateEvent.day
+            if eventsByDay[day] != nil {
+                eventsByDay[day]!.append(event)
+            } else {
+                eventsByDay[day] = [event]
+            }
+        }
+        
+        
+        return eventsByDay.sorted { $0.key < $1.key }
     }
 }
 
 #Preview {
     MainView()
 }
-
