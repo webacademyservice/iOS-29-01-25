@@ -22,7 +22,6 @@ struct ContentView: View {
             .foregroundColor(.white)
             .background(Color.blue)
             .cornerRadius(10)
-            
             Image("boat")
                         .resizable()
                         .scaledToFit()
