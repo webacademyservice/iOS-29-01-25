@@ -92,19 +92,29 @@ extension DiaryEvent {
     }
 }
 
-struct SimpleDate: CustomStringConvertible {
+class SimpleDate: CustomStringConvertible {
     var description: String {
         return "\(day) \(month)"
     }
     
     let month: String
     let day: Int
+    
+    init(month: String, day: Int) {
+        self.month = month
+        self.day = day
+    }
 }
 
-struct ListEvents: DiaryEvent {
+class ListEvents: DiaryEvent {
     
     let nameEvent: [String]
     let dateEvent: SimpleDate
+    
+    init(nameEvent: [String], dateEvent: SimpleDate) {
+        self.nameEvent = nameEvent
+        self.dateEvent = dateEvent
+    }
     
 }
 
@@ -119,7 +129,7 @@ let listVacationEvents = ListEvents(nameEvent: ["Play PS5", "watching films", "a
 
 func findEvent <E:DiaryEvent> (events: [E], date: SimpleDate){
     
-
+    
     for event in events {
         let sortedEvents = event.nameEvent.sorted()
         print("On \(date) planned: \(sortedEvents.joined(separator: ", "))")
@@ -128,5 +138,4 @@ func findEvent <E:DiaryEvent> (events: [E], date: SimpleDate){
 
 findEvent(events: [listDevelopmentEvents], date: feb10)
 findEvent(events: [listVacationEvents], date: feb15)
-
 
