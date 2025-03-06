@@ -12,30 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-            //            if let podcastResponse = viewModel.podcastResult?.data?.podcastUnionV2?.episodesV2?.items {
-            //                List(podcastResponse, id: \.uid) { response in
-            //                    HStack{
-            //                        if let coverArt = response.entity?.data?.coverArt,
-            //                           let firstSource = coverArt.sources?.first,
-            //                           let urlString = firstSource.url,
-            //                           let url = URL(string: urlString) {
-            //                            AsyncImage(url: url) { image in
-            //                                image.resizable()
-            //                                    .scaledToFit()
-            //                                    .frame(width: 50, height: 50)
-            //                            } placeholder: {
-            //                                ProgressView()
-            //                            }
-            //                        } else {
-            //                            Image("photo") //інша іконка для відсутнього зображення
-            //                                .resizable()
-            //                                .scaledToFit()
-            //                                .frame(width: 50, height: 50)
-            //                        }
-            //                        Text(response.entity?.data?.name ?? "No name")
-            //                    }
-            //                }
-            //
+            
             if viewModel.rows.count > 0 {
                 
                 List(viewModel.rows, id: \.title) { row in

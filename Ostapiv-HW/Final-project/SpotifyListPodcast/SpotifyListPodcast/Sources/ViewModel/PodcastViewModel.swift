@@ -35,17 +35,17 @@ class PodcastViewModel: ObservableObject {
     @Published var rows:[PodcastRow] = []
     
     func procesResult(dataObject:PodcastResponse) -> [PodcastRow] {
-     
+        
         dataObject.data?.podcastUnionV2?.episodesV2?.items?.map { episodData in
             let image:PodcastImage
-            if 
+            if
                 let imageString = episodData.entity?.data?.coverArt?.sources?.first?.url,
                 let url = URL(string: imageString){
                 
                 image = .remoute(url)
                 
             } else {
-//                image = Double.random(in: 0..<1) > 0.5 ? .local("photo"):.local("photo1")
+                //                image = Double.random(in: 0..<1) > 0.5 ? .local("photo"):.local("photo1")
                 image = .local("photo")
             }
             return PodcastRow(

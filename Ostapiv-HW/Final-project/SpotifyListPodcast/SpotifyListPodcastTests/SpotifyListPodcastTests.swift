@@ -16,12 +16,12 @@ final class SpotifyListPodcastTests: XCTestCase {
         mockServis = MockServis(mockedResult: PodcastResponse(data: nil))
         sut = PodcastViewModel(service: mockServis)
     }
-
+    
     override func tearDownWithError() throws {
         sut = nil
     }
-
-    func testWhenGetQuaryColldThenRowsNoEmpty() async throws {
+    //Якщо отримуємо запит,то рядки не пусті
+    func testWhenGetQueryCouldThenRowsNoEmpty() async throws {
         // Given
         mockServis.mockedResult = .init(data: .init(podcastUnionV2: .init(episodesV2: EpisodesV2(items: [.init(uid: "", entity: .init(data: .init(id: "", name: "Test", description: "", coverArt: nil)))]))))
         // When
@@ -30,14 +30,14 @@ final class SpotifyListPodcastTests: XCTestCase {
         // Than
         XCTAssertEqual(sut.rows.count, 1)
     }
-
-    func testWhenQueveryHasCoverArtThanRowHasRemouteImage() async throws {
-        // Given
+    // Коли запит має CoverArt то рядок має картинку з інтернету
+    func testWhenQueveryHasCoverArtThenRowHasRemoteImage() async throws {
+        // Given - Умови (Дано)
         mockServis.mockedResult = .init(data: .init(podcastUnionV2: .init(episodesV2: EpisodesV2(items: [.init(uid: "", entity: .init(data: .init(id: "", name: "Test", description: "", coverArt: .init(sources: [.init(url:"https://google.com")]))))]))))
-        // When
+        // When - Коли (Коли викликаємо тести)
         sut.queryChange()
         try await Task.sleep(for: .milliseconds(1))
-        // Than
+        // Then - Тоді (результат який має бути - відповідь)
         // XCTAssertEqual(sut.rows.first?.image, .remoute(URL(string: "https://google.com")))
         if case.remoute(URL(string: "https://google.com")) = sut.rows.first?.image{
             print("ok")
@@ -45,8 +45,8 @@ final class SpotifyListPodcastTests: XCTestCase {
             XCTFail("Remoute image expexted")
         }
     }
-    
-    func testWhenQueveryHasNoCoverArtThanRowHasLocalImage() async throws {
+    // Коли запит немає CoverArt то рядок має локальну картинку
+    func testWhenQueveryHasNoCoverArtThenRowHasLocalImage() async throws {
         //...
     }
     
@@ -56,7 +56,7 @@ final class SpotifyListPodcastTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
-
+    
 }
 
 class MockServis:PodcastServiceProtocol {
