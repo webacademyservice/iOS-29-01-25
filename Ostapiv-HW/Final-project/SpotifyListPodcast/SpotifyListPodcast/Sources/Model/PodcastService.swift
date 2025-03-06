@@ -9,7 +9,7 @@ import Foundation
 // Сервіс для передачі списку підкастів (PodcastService)
 class PodcastService: ObservableObject, PodcastServiceProtocol {
     
-//  @Published var podcastResponse: PodcastResponse?
+    //  @Published var podcastResponse: PodcastResponse?
     
     struct PodcastServiceError: Error {
         let reason: String
@@ -29,17 +29,17 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
         request.setValue("spotify23.p.rapidapi.com", forHTTPHeaderField: "x-rapidapi-host")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-            let response = try await URLSession.shared.data(for: request) // дочекались відповіді
-            
-            let data = response.0
-            
-            let decodedResponse = try JSONDecoder().decode(PodcastResponse.self, from: data) // перетворили JSON дані на модель
-            
-            return decodedResponse // передача ддя виводу на екран
-
-            
-        }
+        let response = try await URLSession.shared.data(for: request) // дочекались відповіді
+        
+        let data = response.0
+        
+        let decodedResponse = try JSONDecoder().decode(PodcastResponse.self, from: data) // перетворили JSON дані на модель
+        
+        return decodedResponse // передача ддя виводу на екран
+        
+        
     }
+}
 
 protocol PodcastServiceProtocol {
     
