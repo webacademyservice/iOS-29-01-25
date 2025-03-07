@@ -11,6 +11,7 @@ import XCTest
 final class SpotifyListPodcastTests: XCTestCase {
     var mockServis:MockServis!
     var sut: PodcastViewModel!
+   
     
     override func setUpWithError() throws {
         mockServis = MockServis(mockedResult: PodcastResponse(data: nil))
@@ -32,11 +33,14 @@ final class SpotifyListPodcastTests: XCTestCase {
     }
     // Коли запит має CoverArt то рядок має картинку з інтернету
     func testWhenQueveryHasCoverArtThenRowHasRemoteImage() async throws {
+        
         // Given - Умови (Дано)
         mockServis.mockedResult = .init(data: .init(podcastUnionV2: .init(episodesV2: EpisodesV2(items: [.init(uid: "", entity: .init(data: .init(id: "", name: "Test", description: "", coverArt: .init(sources: [.init(url:"https://google.com")]))))]))))
+        
         // When - Коли (Коли викликаємо тести)
         sut.queryChange()
         try await Task.sleep(for: .milliseconds(1))
+        
         // Then - Тоді (результат який має бути - відповідь)
         // XCTAssertEqual(sut.rows.first?.image, .remoute(URL(string: "https://google.com")))
         if case.remoute(URL(string: "https://google.com")) = sut.rows.first?.image{
@@ -47,7 +51,19 @@ final class SpotifyListPodcastTests: XCTestCase {
     }
     // Коли запит немає CoverArt то рядок має локальну картинку
     func testWhenQueveryHasNoCoverArtThenRowHasLocalImage() async throws {
-        //...
+        // Given - Умови (Дано)
+        mockServis.mockedResult = .init(data: .init(podcastUnionV2: .init(episodesV2: EpisodesV2(items: [.init(uid: "", entity: .init(data: .init(id: "", name: "Test", description: "", coverArt: nil)))]))))
+        
+        // When - Коли (Коли викликаємо тести)
+        sut.queryChange()
+        try await Task.sleep(for: .milliseconds(1))
+        
+        // Then - Тоді (результат який має бути - відповідь)
+        if case.local("photo") = sut.rows.first?.image{
+            print("ok")
+        } else {
+            XCTFail("Local image expeсted")
+        }
     }
     
     func testPerformanceExample() throws {
@@ -70,3 +86,5 @@ class MockServis:PodcastServiceProtocol {
         mockedResult
     }
 }
+
+
