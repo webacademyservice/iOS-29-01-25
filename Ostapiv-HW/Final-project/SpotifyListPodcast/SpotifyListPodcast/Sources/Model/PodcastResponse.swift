@@ -37,6 +37,7 @@ struct PodcastEpisodeData: Codable {
     let name: String?
     let description: String?
     let coverArt: CoverArt?
+    let duration: Duration?
 }
 
 struct CoverArt: Codable {
@@ -45,4 +46,8 @@ struct CoverArt: Codable {
 
 struct CoverSource: Codable {
     let url: String?
+}
+
+struct Duration: Codable {
+    let totalDuration: Int?
 }
