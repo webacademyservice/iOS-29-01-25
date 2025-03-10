@@ -23,7 +23,10 @@ class PodcastViewModel: ObservableObject {
     struct PodcastRow {
         let title: String
         let image: PodcastImage
+        let description: String
+        let duration: Int
     }
+    
     
     let service:PodcastServiceProtocol
     @Published var podcastResult: PodcastResponse? {
@@ -50,7 +53,9 @@ class PodcastViewModel: ObservableObject {
             }
             return PodcastRow(
                 title: episodData.entity?.data?.name ?? "-",
-                image: image
+                image: image,
+                description: episodData.entity?.data?.description ?? "-",
+                duration: episodData.entity?.data?.duration?.totalDuration ?? 0
             )
         }
         ?? []
