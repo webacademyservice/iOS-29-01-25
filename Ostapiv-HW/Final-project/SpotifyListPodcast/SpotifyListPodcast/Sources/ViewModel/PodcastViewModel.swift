@@ -55,7 +55,7 @@ class PodcastViewModel: ObservableObject {
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
-                duration: episodData.entity?.data?.duration?.totalDuration ?? 0
+                duration: episodData.entity?.data?.duration?.totalMilliseconds ?? 1
             )
         }
         ?? []
