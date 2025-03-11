@@ -61,20 +61,23 @@ struct ContentView: View {
                                 .scaledToFit()
                                 .frame(width: 22, height: 22)
                             Spacer()
-                            Text("50хв")
+                            Text("Тривалість \(row.duration) хв")
                                 .font(.system(size: 14))
-                               
                             
                         }
- 
+                        
                     }
+                    
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)  // Це забезпечить, щоб List заповнював весь доступний простір
+                .listStyle(PlainListStyle()) // Задає простий стиль списку
+                
                 
             } else {
                 Text("Завантаження...")
             }
         }
-        .padding()
+//        .padding()
         .onAppear {
             viewModel.queryChange()
         }

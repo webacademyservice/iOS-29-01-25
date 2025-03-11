@@ -49,5 +49,5 @@ struct CoverSource: Codable {
 }
 
 struct Duration: Codable {
-    let totalDuration: Int?
+    let totalMilliseconds: Int?
 }
