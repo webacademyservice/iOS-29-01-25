@@ -51,11 +51,15 @@ class PodcastViewModel: ObservableObject {
                 //                image = Double.random(in: 0..<1) > 0.5 ? .local("photo"):.local("photo1")
                 image = .local("photo")
             }
+            
+            let durationMilliseconds = episodData.entity?.data?.duration?.totalMilliseconds ?? 0
+            let durationMinutes = durationMilliseconds / 60000
+            
             return PodcastRow(
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
-                duration: episodData.entity?.data?.duration?.totalMilliseconds ?? 1
+                duration: durationMinutes
             )
         }
         ?? []
