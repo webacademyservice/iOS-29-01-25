@@ -45,7 +45,7 @@ struct ContentView: View {
                                     .foregroundColor(Color(red: 98/255.0, green: 98/255.0, blue: 98/255.0))
                             }
                             HStack(spacing:12){
-                                Image(systemName: "plus.circle")
+                                Image(systemName: "star")
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 24, height: 24)
