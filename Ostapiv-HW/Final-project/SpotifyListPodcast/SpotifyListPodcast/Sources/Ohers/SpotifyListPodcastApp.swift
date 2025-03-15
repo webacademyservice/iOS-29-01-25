@@ -11,7 +11,7 @@ import SwiftUI
 struct SpotifyListPodcastApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            InfoPodcastView()
         }
     }
 }
