@@ -7,21 +7,40 @@
 
 import SwiftUI
 
-struct InfoPodcastView: View {
 
+
+struct InfoPodcastView: View {
+    @ObservedObject var viewModel = InfoPdcastViewModel()
+    var podcast: PodcastViewModel.PodcastRow
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    Image("photo")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 300)
-                        .cornerRadius(4)
+                    switch podcast.image{
+                    case .remoute(let url):
+                        AsyncImage(url: url) { image in
+                            image.resizable()
+                                .scaledToFit()
+                                .frame(width: 300, height: 300)
+                                .cornerRadius(4)
+                        } placeholder: {
+                            ProgressView()
+                        }
+                    case .local(let imageName):
+                        Image(imageName) //інша іконка для відсутнього зображення
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 300)
+                    }
+//                    Image("photo")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 300, height: 300)
+//                        .cornerRadius(4)
                 }
                 .padding(.bottom, 16)
                 VStack {
-                    Text("Selects: How the Flu Works")
+                    Text(podcast.title)
                         .font(.system(size: 24))
                         .fontWeight(.bold)
                         .multilineTextAlignment(.leading)
@@ -30,7 +49,7 @@ struct InfoPodcastView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 VStack (spacing:10) {
                     HStack {
-                        Text("Тривалість: 63 хв")
+                        Text("\(podcast.duration) хв")
                             .font(.system(size: 14))
                         Spacer()
                         Text("25.01.2025")
@@ -79,7 +98,7 @@ struct InfoPodcastView: View {
                 }
                 .padding(.bottom, 10)
                 VStack {
-                    Text("Every year the flu virus makes the rounds, laying up young and old alike for days before moving on to another hapless victim. But flu viruses can mutate and once in awhile they turn into something much deadlier, a pandemic that can kill millions. Learn all about it with Josh and Chuck in this classic episode.Every year the flu virus makes the rounds, laying up young and old alike for days before moving on to another hapless victim. But flu viruses can mutate and once in awhile they turn into something much deadlier, a pandemic that can kill millions. Learn all about it with Josh and Chuck in this classic episode.Every year the flu virus makes the rounds, laying up young and old alike for days before moving on to another hapless victim. But flu viruses can mutate and once in awhile they turn into something much deadlier, a pandemic that can kill millions. Learn all about it with Josh and Chuck in this classic episode.Every year the flu virus makes the rounds, laying up young and old alike for days before moving on to another hapless victim. But flu viruses can mutate and once in awhile they turn into something much deadlier, a pandemic that can kill millions. Learn all about it with Josh and Chuck in this classic episode.")
+                    Text(podcast.description)
                         .multilineTextAlignment(.leading)
                 }
                 .padding(.bottom, 10)
@@ -88,10 +107,18 @@ struct InfoPodcastView: View {
             }
             .padding()
         }
+        .onAppear {
+                    viewModel.queryChange() // Викликаємо метод для завантаження даних
+                }
     }
     
 }
 
 #Preview {
-    InfoPodcastView()
+    InfoPodcastView(podcast: PodcastViewModel.PodcastRow(
+            title: "Sample Podcast",
+            image: .local("photo"),
+            description: "This is a description of the sample podcast.",
+            duration: 60
+        ))
 }

@@ -1,13 +1,13 @@
 //
-//  PodcastViewModel.swift
+//  InfoPdcastViewModel.swift
 //  SpotifyListPodcast
 //
-//  Created by Denis Ostapiv on 05.03.2025.
+//  Created by Denis Ostapiv on 16.03.2025.
 //
 
 import Foundation
 
-class PodcastViewModel: ObservableObject {
+class InfoPdcastViewModel: ObservableObject {
     
     internal init(service: any PodcastServiceProtocol = PodcastService()) {
         self.service = service
@@ -15,16 +15,17 @@ class PodcastViewModel: ObservableObject {
         self.rows = rows
     }
     
-    enum PodcastImage: Hashable   {
+    enum PodcastImage  {
         case remoute (URL)
         case local (String)
     }
     
-    struct PodcastRow: Hashable {
+    struct PodcastRow1 {
         let title: String
         let image: PodcastImage
         let description: String
         let duration: Int
+        let data: Data
     }
     
     
@@ -35,14 +36,14 @@ class PodcastViewModel: ObservableObject {
         }
     }
     
-    @Published var rows:[PodcastRow] = []
+    @Published var rows:[PodcastRow1] = []
     
-    func procesResult(dataObject:PodcastResponse) -> [PodcastRow] {
+    func procesResult(dataObject:PodcastResponse) -> [PodcastRow1] {
         
         dataObject.data?.podcastUnionV2?.episodesV2?.items?.map { episodData in
             let image:PodcastImage
             if
-                let imageString = episodData.entity?.data?.coverArt?.sources?.last?.url,
+                let imageString = episodData.entity?.data?.coverArt?.sources?.first?.url,
                 let url = URL(string: imageString){
                 
                 image = .remoute(url)
@@ -55,11 +56,12 @@ class PodcastViewModel: ObservableObject {
             let durationMilliseconds = episodData.entity?.data?.duration?.totalMilliseconds ?? 0
             let durationMinutes = durationMilliseconds / 60000
             
-            return PodcastRow(
+            return PodcastRow1(
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
-                duration: durationMinutes
+                duration: durationMinutes,
+                data: episodData.entity?.data?.data?.isoString ?? Data()
             )
         }
         ?? []
@@ -77,4 +79,6 @@ class PodcastViewModel: ObservableObject {
             }
         }
     }
+    
 }
+

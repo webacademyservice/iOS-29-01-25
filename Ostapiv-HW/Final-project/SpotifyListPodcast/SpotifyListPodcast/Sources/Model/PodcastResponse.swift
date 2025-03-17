@@ -38,6 +38,7 @@ struct PodcastEpisodeData: Codable {
     let description: String?
     let coverArt: CoverArt?
     let duration: Duration?
+    let data: ReleaseDate? 
 }
 
 struct CoverArt: Codable {
@@ -50,4 +51,8 @@ struct CoverSource: Codable {
 
 struct Duration: Codable {
     let totalMilliseconds: Int?
+}
+
+struct ReleaseDate: Codable {
+    let isoString: Data?
 }
