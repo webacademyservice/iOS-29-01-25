@@ -11,9 +11,22 @@ struct ContentView: View {
     @State var query: String = ""
     @State var weatherData: NetworkResponce?  // Get data from Model (Network Response)
     
+    // Only for Picker option
+    let optionsCity = ["Vinnytsya","Lviv", "London", "New York", "Kiev", "Sydney", "Tokyo", "Singapore", "Beijing", "Wellington"]
+    
     var body: some View {
         VStack {
-            TextField("Location name", text: $query)  //  Read User data
+            Text("Your selected city: \(query)")
+            
+            Picker("Select city", selection: $query) {
+                ForEach(optionsCity, id: \.self) { option in
+                    Text(option)
+                }
+            }.pickerStyle(WheelPickerStyle())
+                .frame(height: 100)
+                .clipped()
+                
+            //TextField("Location name", text: $query)  //  Read User data for type option
             
             Divider()
             
@@ -22,7 +35,8 @@ struct ContentView: View {
                 List(weatherData.list, id:\.dt) { forecast in
                     HStack{
                         Text("\(Date(timeIntervalSince1970: forecast.dt))")
-                        Text("\(forecast.main.temp) C")
+                        Spacer()
+                        Text("\(String(format: "%.1f", forecast.main.temp)) °C")
                             .font(.title)
                     }
                 }
@@ -31,7 +45,7 @@ struct ContentView: View {
                 Image(systemName: "globe")
                     .imageScale(.large)
                     .foregroundStyle(.tint)
-                Text("Please enter location name")
+                Text("Please select location")
                 Spacer()
             }
         }
@@ -65,9 +79,7 @@ struct ContentView: View {
                 } catch {
                     print("Error:\(error)")
                 }
-            
             }
-            
         }
     }
 }
