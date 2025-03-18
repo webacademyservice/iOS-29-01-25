@@ -11,7 +11,28 @@ import SwiftUI
 struct SpotifyListPodcastApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TabView {
+                MainView()
+                    .tabItem {
+                        Image(systemName: "house")
+                        Text("Home")
+                    }
+                ContentView()
+                    .tabItem {
+                        Image(systemName: "music.note.list")
+                        Text("Podcasts")
+                    }
+                SearchView()
+                    .tabItem {
+                        Image(systemName: "magnifyingglass")
+                        Text("Search")
+                    }
+                AccountView()
+                    .tabItem {
+                        Image(systemName: "person.crop.circle")
+                        Text("Account")
+                    }
+            }
         }
     }
 }
