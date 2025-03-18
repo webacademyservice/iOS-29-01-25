@@ -67,17 +67,17 @@ struct ContentView: View {
                                         .scaledToFit()
                                         .frame(width: 24, height: 24)
                                     Spacer()
-                                    Text("\(row.duration) хв")
+                                    Text("\(row.duration) min")
                                         .font(.system(size: 14))
                                 }
                                 
                             }
                             .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
                         }
-                        .listStyle(.plain) // Видаляє стандартний стиль списку
-                        .navigationTitle("List Podcasts") // Заголовок
+                       
+//                .navigationTitle("List Podcasts") // Заголовок
                     }
-                    
+                    .listStyle(.plain) // Видаляє стандартний стиль списку
                 } else {
                     Text("Завантаження...")
                 }
@@ -90,6 +90,7 @@ struct ContentView: View {
 //            .navigationDestination(for: PodcastViewModel.PodcastRow.self) { row in
 //                InfoPodcastView(podcast: row)
 //            }
+            .navigationTitle("List Podcasts") // Заголовок
         }
     }
 }
