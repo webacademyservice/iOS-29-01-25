@@ -74,8 +74,6 @@ struct ContentView: View {
                             }
                             .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
                         }
-                       
-//                .navigationTitle("List Podcasts") // Заголовок
                     }
                     .listStyle(.plain) // Видаляє стандартний стиль списку
                 } else {
