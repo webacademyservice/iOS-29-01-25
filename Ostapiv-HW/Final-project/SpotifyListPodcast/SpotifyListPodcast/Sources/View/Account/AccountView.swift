@@ -9,7 +9,12 @@ import SwiftUI
 
 struct AccountView: View {
     var body: some View {
-        Text("Account")
+        ScrollView{
+            VStack(alignment: .leading, spacing: 24) {
+                AccountBar()
+            }
+        }
+        .padding(16)
     }
 }
 
