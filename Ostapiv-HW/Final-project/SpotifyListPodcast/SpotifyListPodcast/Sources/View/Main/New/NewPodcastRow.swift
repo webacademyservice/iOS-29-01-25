@@ -8,29 +8,37 @@
 import SwiftUI
 
 struct NewPodcastRow: View {
+    @ObservedObject var viewModel = PodcastViewModel()
+    let rows = [
+           GridItem(.flexible()),
+           GridItem(.flexible()),
+       ]
     var body: some View {
         VStack(alignment: .leading) {
-            Text("Popupular podcasts")
-                .font(.title2)
-                .fontWeight(.bold)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack{
-                    VStack{
-                        NewItem()
-                        NewItem()
-                        
+            if viewModel.rows.count > 0 {
+                Text("New Releases")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                ScrollView (.horizontal, showsIndicators: false){
+                    LazyHGrid(rows: rows, spacing: 16){
+                            ForEach(viewModel.rows) { podcast in
+                                NewItem(podcast: podcast)  
+                            }
                     }
-                    VStack{
-                        NewItem()
-                        NewItem()
-                       
-                    }
-                    
+                    .frame(height: 140)
                 }
             }
+            else {
+                Text("Завантаження...")
+            }
+            
+        }
+        .onAppear {
+            viewModel.queryChange()  // Запускаємо завантаження даних
         }
     }
 }
+
 
 #Preview {
     NewPodcastRow()

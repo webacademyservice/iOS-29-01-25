@@ -1,40 +1,37 @@
 //
-//  PopulatPodcastRow .swift
+//  TrendingRow.swift
 //  SpotifyListPodcast
 //
-//  Created by Denis Ostapiv on 19.03.2025.
+//  Created by Denis Ostapiv on 20.03.2025.
 //
 
 import SwiftUI
 
-struct PopulatPodcastRow: View {
+struct TrendingRow: View {
     @ObservedObject var viewModel = PodcastViewModel()
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading){
             if viewModel.rows.count > 0 {
-                Text("Popupular Podcasts")
+                Text("Trending")
                     .font(.title2)
                     .fontWeight(.bold)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack{
                         ForEach(viewModel.rows) { podcast in
-                            PopularItem(podcast: podcast)  // Передаємо кожен подкаст в PopularItem
+                            PopularItem(podcast: podcast)
                         }
                     }
-                    .frame(height: 185)
                 }
-            }
-            else {
+            } else {
                 Text("Завантаження...")
             }
         }
         .onAppear {
             viewModel.queryChange()  // Запускаємо завантаження даних
         }
-        
     }
 }
 
 #Preview {
-    PopulatPodcastRow()
+    TrendingRow()
 }

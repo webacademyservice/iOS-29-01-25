@@ -8,27 +8,49 @@
 import SwiftUI
 
 struct NewItem: View {
+    var podcast: PodcastViewModel.PodcastRow
     var body: some View {
        
+    VStack(alignment: .leading){
         HStack{
-            Image("photo")
-                .resizable()
-                .frame(width: 64, height: 64)
-                .cornerRadius(4)
+            switch podcast.image {
+            case .local(let imageName):
+                Image(imageName)
+                    .resizable()
+                    .frame(width: 64, height: 64)
+                    .cornerRadius(4)
+            case .remoute(let url):
+                AsyncImage(url: url) { image in
+                    image.resizable()
+                        .frame(width: 64, height: 64)
+                        .cornerRadius(4)
+                } placeholder: {
+                    ProgressView()
+                }
+            }
+            
             VStack(alignment: .leading){
-                Text("Elementary Podcasts")
+                Text(podcast.title)
                     .font(.callout)
+                    .lineLimit(1)
                     .padding(.bottom,8)
-                Text("Elementary Podcasts by the British Council")
+                Text(podcast.description)
                     .font(.caption)
+                    .lineLimit(2)
             }
             Spacer()
             Image(systemName: "ellipsis")
-  
         }
+        }
+    .frame(width: 340)
     }
 }
 
 #Preview {
-    NewItem()
+    NewItem(podcast: PodcastViewModel.PodcastRow (
+        title: "This is a description of the sample podcast.",
+        image: .local("photo"),
+        description: "This is a description of the sample podcast. This is a description of the sample podcast.This is a description of the sample podcast.",
+        duration: 60
+    ))
 }
