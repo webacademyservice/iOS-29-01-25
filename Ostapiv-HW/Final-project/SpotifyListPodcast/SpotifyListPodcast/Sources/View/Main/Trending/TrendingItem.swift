@@ -1,13 +1,13 @@
 //
-//  PopularItem.swift
+//  TrendingItem.swift
 //  SpotifyListPodcast
 //
-//  Created by Denis Ostapiv on 19.03.2025.
+//  Created by Denis Ostapiv on 20.03.2025.
 //
 
 import SwiftUI
 
-struct PopularItem: View {
+struct TrendingItem: View {
     var podcast: PodcastViewModel.PodcastRow
     var body: some View {
         
@@ -16,32 +16,30 @@ struct PopularItem: View {
             case .local(let imageName):
                 Image(imageName)
                     .resizable()
-                    .frame(width: 155, height: 155)
+                    .frame(width: 250, height: 250)
                     .cornerRadius(4)
                     .padding(.bottom, 4)
             case .remoute(let url):
                 AsyncImage(url: url) { image in
                     image.resizable()
-                        .frame(width: 155, height: 155)
+                        .frame(width: 250, height: 250)
                         .cornerRadius(4)
                         .padding(.bottom, 4)
                 } placeholder: {
                     ProgressView()
                 }
             }
-            
-            
             Text (podcast.title)
                 .font(.callout)
                 .lineLimit(1)
                 .truncationMode(.tail)
-                .frame(width: 155, alignment: .leading)
+                .frame(width: 250, alignment: .leading)
         }
     }
 }
 
 #Preview {
-    PopularItem(podcast: PodcastViewModel.PodcastRow (
+    TrendingItem(podcast: PodcastViewModel.PodcastRow (
         title: "This is a description of the sample podcast.",
         image: .local("photo"),
         description: "This is a description of the sample podcast.",

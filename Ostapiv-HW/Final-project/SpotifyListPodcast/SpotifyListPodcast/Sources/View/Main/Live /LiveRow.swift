@@ -1,40 +1,42 @@
 //
-//  PopulatPodcastRow .swift
+//  LiveRow.swift
 //  SpotifyListPodcast
 //
-//  Created by Denis Ostapiv on 19.03.2025.
+//  Created by Denis Ostapiv on 20.03.2025.
 //
 
 import SwiftUI
 
-struct PopulatPodcastRow: View {
+struct LiveRow: View {
     @ObservedObject var viewModel = PodcastViewModel()
+    let rows = [
+           GridItem(.flexible()),
+           GridItem(.flexible()),
+       ]
     var body: some View {
         VStack(alignment: .leading) {
             if viewModel.rows.count > 0 {
-                Text("Popupular Podcasts")
+                Text("Live Podcas")
                     .font(.title2)
                     .fontWeight(.bold)
                 ScrollView(.horizontal, showsIndicators: false) {
-                    HStack{
-                        ForEach(viewModel.rows) { podcast in
-                            PopularItem(podcast: podcast)  // Передаємо кожен подкаст в PopularItem
-                        }
+                    LazyHGrid(rows: rows, spacing: 16){
+                            ForEach(viewModel.rows) { podcast in
+                                LiveItem(podcast: podcast)
+                            }
                     }
-                    .frame(height: 185)
+                    .frame(height: 260)
                 }
-            }
-            else {
+            } else {
                 Text("Завантаження...")
             }
         }
         .onAppear {
             viewModel.queryChange()  // Запускаємо завантаження даних
         }
-        
     }
 }
 
 #Preview {
-    PopulatPodcastRow()
+    LiveRow()
 }

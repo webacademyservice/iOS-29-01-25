@@ -20,7 +20,8 @@ class PodcastViewModel: ObservableObject {
         case local (String)
     }
     
-    struct PodcastRow: Hashable {
+    struct PodcastRow: Identifiable, Hashable {
+        let id = UUID()
         let title: String
         let image: PodcastImage
         let description: String

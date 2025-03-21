@@ -9,28 +9,13 @@ import SwiftUI
 
 struct MainView: View {
     var body: some View {
-        VStack{
-            HStack{
-                Image("logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 32)
-                Spacer()
-                Toggle(isOn: /*@PLACEHOLDER=Is On@*/.constant(true)) {
-                    Text("Текст")
-                }
-            }
-            .padding(.bottom, 8)
-            HStack{
-                PopulatPodcastRow_()
-            }
-            .padding(.bottom, 16)
-            HStack{
+        ScrollView{
+            VStack(alignment: .leading, spacing: 24) {
+                AppBar()
+                PopulatPodcastRow()
                 NewPodcastRow()
-            }
-            .padding(.bottom, 16)
-            HStack{
-                PopulatPodcastRow_()
+                TrendingRow()
+                LiveRow()
             }
         }
         .padding(16)
