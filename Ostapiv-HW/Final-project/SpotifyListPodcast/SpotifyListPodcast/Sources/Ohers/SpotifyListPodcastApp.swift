@@ -9,6 +9,13 @@ import SwiftUI
 
 @main
 struct SpotifyListPodcastApp: App {
+    
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
+    
+    init() {
+        updateAppearance()
+    }
+    
     var body: some Scene {
         WindowGroup {
             TabView {
@@ -16,6 +23,9 @@ struct SpotifyListPodcastApp: App {
                     .tabItem {
                         Image(systemName: "house")
                         Text("Home")
+                    }
+                    .onAppear {
+                        updateAppearance()
                     }
                 ContentView()
                     .tabItem {
@@ -33,6 +43,14 @@ struct SpotifyListPodcastApp: App {
                         Text("Account")
                     }
             }
+        }
+    }
+    
+    
+    private func updateAppearance() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
         }
     }
 }
