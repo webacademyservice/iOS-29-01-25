@@ -15,7 +15,6 @@ struct InfoPodcastView: View {
     let podcast: PodcastViewModel.PodcastRow
     
     var body: some View {
-        NavigationStack {
             ScrollView {
                 VStack {
                     switch podcast.image{
@@ -105,9 +104,8 @@ struct InfoPodcastView: View {
                 Spacer()
             }
             .padding()
-        }
         .onAppear {
-            ViewModel .queryChange() // Викликаємо метод для завантаження даних
+            ViewModel .queryChange() 
         }
     }
     
