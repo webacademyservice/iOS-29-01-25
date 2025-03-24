@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct TrendingItem: View {
     var podcast: PodcastViewModel.PodcastRow
@@ -20,14 +21,15 @@ struct TrendingItem: View {
                     .cornerRadius(4)
                     .padding(.bottom, 4)
             case .remoute(let url):
-                AsyncImage(url: url) { image in
-                    image.resizable()
-                        .frame(width: 250, height: 250)
-                        .cornerRadius(4)
-                        .padding(.bottom, 4)
-                } placeholder: {
-                    ProgressView()
-                }
+                KFImage(url)
+                    .resizable()
+                    .placeholder {
+                        ProgressView()
+                    }
+                    .frame(width: 250, height: 250)
+                    .cornerRadius(4)
+                    .padding(.bottom, 4)
+                
             }
             Text (podcast.title)
                 .font(.callout)
