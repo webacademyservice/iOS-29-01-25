@@ -6,37 +6,35 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 
 
 struct InfoPodcastView: View {
-    @ObservedObject var viewModel = InfoPdcastViewModel()
-    var podcast: PodcastViewModel.PodcastRow
+    @ObservedObject var ViewModel = InfoPdcastViewModel()
+    let podcast: PodcastViewModel.PodcastRow
+    
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
                     switch podcast.image{
                     case .remoute(let url):
-                        AsyncImage(url: url) { image in
-                            image.resizable()
-                                .scaledToFit()
-                                .frame(width: 300, height: 300)
-                                .cornerRadius(4)
-                        } placeholder: {
-                            ProgressView()
-                        }
+                        KFImage(url)
+                            .resizable()
+                            .placeholder {
+                                ProgressView()
+                            }
+                            .scaledToFit()
+                            .frame(width: 300, height: 300)
+                            .cornerRadius(4)
+                        
                     case .local(let imageName):
                         Image(imageName) //інша іконка для відсутнього зображення
                             .resizable()
                             .scaledToFit()
                             .frame(width: 300, height: 300)
                     }
-//                    Image("photo")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 300, height: 300)
-//                        .cornerRadius(4)
                 }
                 .padding(.bottom, 16)
                 VStack {
@@ -103,22 +101,23 @@ struct InfoPodcastView: View {
                 }
                 .padding(.bottom, 10)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                
                 Spacer()
             }
             .padding()
         }
         .onAppear {
-                    viewModel.queryChange() // Викликаємо метод для завантаження даних
-                }
+            ViewModel .queryChange() // Викликаємо метод для завантаження даних
+        }
     }
     
 }
 
 #Preview {
     InfoPodcastView(podcast: PodcastViewModel.PodcastRow(
-            title: "Sample Podcast",
-            image: .local("photo"),
-            description: "This is a description of the sample podcast.",
-            duration: 60
-        ))
+        title: "Sample Podcast",
+        image: .local("photo"),
+        description: "This is a description of the sample podcast.",
+        duration: 60
+    ))
 }

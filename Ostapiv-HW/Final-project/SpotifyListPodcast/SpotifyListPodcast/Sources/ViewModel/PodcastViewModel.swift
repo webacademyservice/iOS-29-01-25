@@ -15,7 +15,7 @@ class PodcastViewModel: ObservableObject {
         self.rows = rows
     }
     
-    enum PodcastImage: Hashable   {
+    enum PodcastImage: Hashable {
         case remoute (URL)
         case local (String)
     }
@@ -26,6 +26,7 @@ class PodcastViewModel: ObservableObject {
         let image: PodcastImage
         let description: String
         let duration: Int
+        
     }
     
     
@@ -70,12 +71,14 @@ class PodcastViewModel: ObservableObject {
         Task {
             do {
                 let result = try await service.fetchData()
-                let rows = procesResult(dataObject: result)
+                let newRows = procesResult(dataObject: result)
                 await MainActor.run {
-                    podcastResult = result
-                    self.rows = rows
+                    self.rows = newRows
                 }
+            } catch {
+                print("Error fetching data: \(error)")
             }
         }
     }
+    
 }

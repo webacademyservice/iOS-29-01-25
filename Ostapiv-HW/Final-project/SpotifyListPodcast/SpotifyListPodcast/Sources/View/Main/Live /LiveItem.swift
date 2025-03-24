@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct LiveItem: View {
     var podcast: PodcastViewModel.PodcastRow
@@ -21,15 +22,15 @@ struct LiveItem: View {
                         .cornerRadius(4)
                         .padding(.bottom, 4)
                 case .remoute(let url):
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .frame(width: 80, height: 80)
-                            .cornerRadius(4)
-                            .padding(.bottom, 4)
-                    } placeholder: {
-                        ProgressView()
-                    }
+                    KFImage(url)
+                        .resizable()
+                        .placeholder {
+                            ProgressView()
+                        }
+                        .frame(width: 80, height: 80)
+                        .cornerRadius(4)
+                        .padding(.bottom, 4)
+                    
                 }
                 Text (podcast.title)
                     .font(.footnote)

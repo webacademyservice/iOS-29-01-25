@@ -6,43 +6,45 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct NewItem: View {
     var podcast: PodcastViewModel.PodcastRow
     var body: some View {
-       
-    VStack(alignment: .leading){
-        HStack{
-            switch podcast.image {
-            case .local(let imageName):
-                Image(imageName)
-                    .resizable()
-                    .frame(width: 64, height: 64)
-                    .cornerRadius(4)
-            case .remoute(let url):
-                AsyncImage(url: url) { image in
-                    image.resizable()
+        
+        VStack(alignment: .leading){
+            HStack{
+                switch podcast.image {
+                case .local(let imageName):
+                    Image(imageName)
+                        .resizable()
                         .frame(width: 64, height: 64)
                         .cornerRadius(4)
-                } placeholder: {
-                    ProgressView()
+                case .remoute(let url):
+                    KFImage(url)
+                        .resizable()
+                        .placeholder {
+                            ProgressView()
+                        }
+                        .frame(width: 64, height: 64)
+                        .cornerRadius(4)
+                    
                 }
+                
+                VStack(alignment: .leading){
+                    Text(podcast.title)
+                        .font(.callout)
+                        .lineLimit(1)
+                        .padding(.bottom,8)
+                    Text(podcast.description)
+                        .font(.caption)
+                        .lineLimit(2)
+                }
+                Spacer()
+                Image(systemName: "ellipsis")
             }
-            
-            VStack(alignment: .leading){
-                Text(podcast.title)
-                    .font(.callout)
-                    .lineLimit(1)
-                    .padding(.bottom,8)
-                Text(podcast.description)
-                    .font(.caption)
-                    .lineLimit(2)
-            }
-            Spacer()
-            Image(systemName: "ellipsis")
         }
-        }
-    .frame(width: 340)
+        .frame(width: 340)
     }
 }
 

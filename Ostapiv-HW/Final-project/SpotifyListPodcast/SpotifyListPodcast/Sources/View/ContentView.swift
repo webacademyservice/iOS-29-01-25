@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct ContentView: View {
     @ObservedObject var viewModel = PodcastViewModel()
@@ -13,26 +14,23 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                
                 if viewModel.rows.count > 0 {
-                    
                     List(viewModel.rows, id: \.title) { row in
-                        
-//                        NavigationLink (value: row){
-                        NavigationLink(destination: InfoPodcastView(podcast: row)) {
-                            
+                        //                        NavigationLink(destination: InfoPodcastView(podcast: row)) {
+                        NavigationLink(value: row){
                             VStack(spacing:10) {
                                 HStack(spacing:12){
                                     switch row.image{
                                     case .remoute(let url):
-                                        AsyncImage(url: url) { image in
-                                            image.resizable()
-                                                .scaledToFit()
-                                                .frame(width: 50, height: 50)
-                                                .cornerRadius(4)
-                                        } placeholder: {
-                                            ProgressView()
-                                        }
+                                        KFImage(url)
+                                            .resizable()
+                                            .placeholder {
+                                                ProgressView()
+                                            }
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 50)
+                                            .cornerRadius(4)
+                                        
                                     case .local(let imageName):
                                         Image(imageName) //інша іконка для відсутнього зображення
                                             .resizable()
@@ -70,25 +68,22 @@ struct ContentView: View {
                                     Text("\(row.duration) min")
                                         .font(.system(size: 14))
                                 }
-                                
                             }
                             .listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
                         }
                     }
                     .listStyle(.plain) // Видаляє стандартний стиль списку
+                    .navigationTitle("List Podcasts") // Заголовок
+                    .navigationDestination(for: PodcastViewModel.PodcastRow.self) { podcast in
+                        InfoPodcastView(podcast: podcast)
+                    }
                 } else {
                     Text("Завантаження...")
                 }
             }
-            //        .padding()
             .onAppear {
                 viewModel.queryChange()
             }
-            
-//            .navigationDestination(for: PodcastViewModel.PodcastRow.self) { row in
-//                InfoPodcastView(podcast: row)
-//            }
-            .navigationTitle("List Podcasts") // Заголовок
         }
     }
 }
