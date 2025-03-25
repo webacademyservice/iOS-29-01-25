@@ -105,7 +105,7 @@ struct InfoPodcastView: View {
             }
             .padding()
         .onAppear {
-            ViewModel .queryChange() // Викликаємо метод для завантаження даних
+            ViewModel .queryChange() 
         }
     }
     

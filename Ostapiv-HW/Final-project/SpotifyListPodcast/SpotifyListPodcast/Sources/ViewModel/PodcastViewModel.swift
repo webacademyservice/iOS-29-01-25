@@ -9,10 +9,10 @@ import Foundation
 
 class PodcastViewModel: ObservableObject {
     
-    internal init(service: any PodcastServiceProtocol = PodcastService()) {
+    internal init(service: PodcastServiceProtocol = PodcastService()) {
         self.service = service
-        self.podcastResult = podcastResult
-        self.rows = rows
+        self.podcastResult = nil
+        self.rows = []
     }
     
     enum PodcastImage: Hashable {
@@ -31,11 +31,12 @@ class PodcastViewModel: ObservableObject {
     
     
     let service:PodcastServiceProtocol
-    @Published var podcastResult: PodcastResponse? {
-        willSet{
-            objectWillChange.send()
-        }
-    }
+    @Published var podcastResult: PodcastResponse?
+//    {
+//        willSet{
+//            objectWillChange.send()
+//        }
+//    }
     
     @Published var rows:[PodcastRow] = []
     
@@ -50,7 +51,7 @@ class PodcastViewModel: ObservableObject {
                 image = .remoute(url)
                 
             } else {
-                //                image = Double.random(in: 0..<1) > 0.5 ? .local("photo"):.local("photo1")
+               
                 image = .local("photo")
             }
             
@@ -62,6 +63,7 @@ class PodcastViewModel: ObservableObject {
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
                 duration: durationMinutes
+               
             )
         }
         ?? []
@@ -76,7 +78,7 @@ class PodcastViewModel: ObservableObject {
                     self.rows = newRows
                 }
             } catch {
-                print("Error fetching data: \(error)")
+                print("Помилка завантаження: \(error.localizedDescription)")
             }
         }
     }
