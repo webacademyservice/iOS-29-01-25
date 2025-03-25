@@ -15,9 +15,17 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
         let reason: String
     }
     
+    let requestPath = "https://spotify23.p.rapidapi.com/podcast_episodes/?id=0ofXAdFIQQRsCYj9754UFx&offset=0&limit=50"
+    private let apiKey = "315774d55emsh81ccc97687857eep19a986jsne4d92bec7e03"
+    private let apiHost = "spotify23.p.rapidapi.com"
+    
+    
     func fetchData() async throws -> PodcastResponse {
-        //Перетворити запит на запрос
-        let requestPath = "https://spotify23.p.rapidapi.com/podcast_episodes/?id=0ofXAdFIQQRsCYj9754UFx&offset=0&limit=50"
+        // 1️⃣ Спочатку пробуємо отримати кешовані дані
+        if let cachedData = try CacheManager.shared.loadCachedData() {
+            return cachedData
+        }
+        
         guard let url = URL(string: requestPath) else {
             throw PodcastServiceError(reason: "Не можу зробити URL від \(requestPath)")
         }
@@ -25,8 +33,8 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
         var request = URLRequest(url: url)
         
         //хедери та ключі для доступу
-        request.setValue("315774d55emsh81ccc97687857eep19a986jsne4d92bec7e03", forHTTPHeaderField: "x-rapidapi-key")
-        request.setValue("spotify23.p.rapidapi.com", forHTTPHeaderField: "x-rapidapi-host")
+        request.setValue(apiKey, forHTTPHeaderField: "x-rapidapi-key")
+        request.setValue(apiHost, forHTTPHeaderField: "x-rapidapi-host")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let response = try await URLSession.shared.data(for: request) // дочекались відповіді
@@ -34,6 +42,8 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
         let data = response.0
         
         let decodedResponse = try JSONDecoder().decode(PodcastResponse.self, from: data) // перетворили JSON дані на модель
+        
+        CacheManager.shared.saveToCache(data: decodedResponse)
         
         return decodedResponse // передача ддя виводу на екран
         
