@@ -9,10 +9,10 @@ import Foundation
 
 class PodcastViewModel: ObservableObject {
     
-    internal init(service: PodcastServiceProtocol = PodcastService()) {
+    internal init(service: any PodcastServiceProtocol = PodcastService()) {
         self.service = service
-        self.podcastResult = nil
-        self.rows = []
+        self.podcastResult = podcastResult
+        self.rows = rows
     }
     
     enum PodcastImage: Hashable {
@@ -32,11 +32,11 @@ class PodcastViewModel: ObservableObject {
     
     let service:PodcastServiceProtocol
     @Published var podcastResult: PodcastResponse?
-//    {
-//        willSet{
-//            objectWillChange.send()
-//        }
-//    }
+    {
+        willSet{
+            objectWillChange.send()
+        }
+    }
     
     @Published var rows:[PodcastRow] = []
     

@@ -12,15 +12,16 @@ class InfoPdcastViewModel: ObservableObject {
     internal init(service: any PodcastServiceProtocol = PodcastService()) {
         self.service = service
         self.podcastResult = podcastResult
-        self.rows = rows
+        self.rowsInfo = rowsInfo
     }
 
-    enum PodcastImage  {
+    enum PodcastImage: Hashable  {
         case remoute (URL)
         case local (String)
     }
 
-    struct PodcastRow1 {
+    struct PodcastRowInfo: Identifiable, Hashable {
+        let id = UUID()
         let title: String
         let image: PodcastImage
         let description: String
@@ -36,9 +37,9 @@ class InfoPdcastViewModel: ObservableObject {
         }
     }
 
-    @Published var rows:[PodcastRow1] = []
+    @Published var rowsInfo:[PodcastRowInfo] = []
 
-    func procesResult(dataObject:PodcastResponse) -> [PodcastRow1] {
+    func procesResult(dataObject:PodcastResponse) -> [PodcastRowInfo] {
 
         dataObject.data?.podcastUnionV2?.episodesV2?.items?.map { episodData in
             let image:PodcastImage
@@ -56,7 +57,7 @@ class InfoPdcastViewModel: ObservableObject {
             let durationMilliseconds = episodData.entity?.data?.duration?.totalMilliseconds ?? 0
             let durationMinutes = durationMilliseconds / 60000
 
-            return PodcastRow1(
+            return PodcastRowInfo(
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
@@ -71,11 +72,13 @@ class InfoPdcastViewModel: ObservableObject {
         Task {
             do {
                 let result = try await service.fetchData()
-                let rows = procesResult(dataObject: result)
+                let infoRows = procesResult(dataObject: result)
                 await MainActor.run {
                     podcastResult = result
-                    self.rows = rows
+                    self.rowsInfo = infoRows
                 }
+            } catch {
+                print("Помилка завантаження: \(error.localizedDescription)")
             }
         }
     }

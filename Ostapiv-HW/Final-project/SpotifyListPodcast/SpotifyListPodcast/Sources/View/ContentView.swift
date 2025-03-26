@@ -16,7 +16,6 @@ struct ContentView: View {
             VStack {
                 if viewModel.rows.count > 0 {
                     List(viewModel.rows, id: \.title) { row in
-                        //                        NavigationLink(destination: InfoPodcastView(podcast: row)) {
                         NavigationLink(value: row){
                             VStack(spacing:10) {
                                 HStack(spacing:12){
