@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  ListPodcast.swift
 //  SpotifyListPodcast
 //
 //  Created by Denis Ostapiv on 28.02.2025.
@@ -8,11 +8,11 @@
 import SwiftUI
 import Kingfisher
 
-struct ContentView: View {
+struct ListPodcast: View {
     @ObservedObject var viewModel = PodcastViewModel()
     
     var body: some View {
-        NavigationStack {
+       // NavigationStack {
             VStack {
                 if viewModel.rows.count > 0 {
                     List(viewModel.rows, id: \.title) { row in
@@ -73,9 +73,9 @@ struct ContentView: View {
                     }
                     .listStyle(.plain) // Видаляє стандартний стиль списку
                     .navigationTitle("List Podcasts") // Заголовок
-                    .navigationDestination(for: PodcastViewModel.PodcastRow.self) { podcast in
-                        InfoPodcastView(podcast: podcast)
-                    }
+//                    .navigationDestination(for: PodcastViewModel.PodcastRow.self) { podcast in
+//                        InfoPodcastView(podcast: podcast)
+//                    }
                 } else {
                     Text("Завантаження...")
                 }
@@ -85,10 +85,10 @@ struct ContentView: View {
             }
         }
     }
-}
+//}
 
 
 
 #Preview {
-    ContentView()
+    ListPodcast()
 }

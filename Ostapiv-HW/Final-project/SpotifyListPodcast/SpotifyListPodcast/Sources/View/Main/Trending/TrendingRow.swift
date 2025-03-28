@@ -18,7 +18,10 @@ struct TrendingRow: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack{
                         ForEach(viewModel.rows) { podcast in
-                            PopularItem(podcast: podcast)
+                            NavigationLink(value: podcast){
+                                PopularItem(podcast: podcast)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }

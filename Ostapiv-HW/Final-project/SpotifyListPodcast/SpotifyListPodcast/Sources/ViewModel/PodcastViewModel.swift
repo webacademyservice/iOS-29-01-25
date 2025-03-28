@@ -26,10 +26,9 @@ class PodcastViewModel: ObservableObject {
         let image: PodcastImage
         let description: String
         let duration: Int
+        let releaseDate: String
         
     }
-    
-    
     let service:PodcastServiceProtocol
     @Published var podcastResult: PodcastResponse?
     {
@@ -51,19 +50,27 @@ class PodcastViewModel: ObservableObject {
                 image = .remoute(url)
                 
             } else {
-               
+                
                 image = .local("photo")
             }
-            
+            // Перетворення тривалість в хв
             let durationMilliseconds = episodData.entity?.data?.duration?.totalMilliseconds ?? 0
             let durationMinutes = durationMilliseconds / 60000
+            
+            // Перетворення дати
+            let releaseDateIosString = episodData.entity?.data?.releaseDate?.isoString ?? "-"
+            let formattedDate = ISO8601DateFormatter()
+                .date(from: releaseDateIosString)
+                .map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .short) }
+                ?? "Invalid date format"
+            
             
             return PodcastRow(
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
-                duration: durationMinutes
-               
+                duration: durationMinutes,
+                releaseDate: formattedDate
             )
         }
         ?? []

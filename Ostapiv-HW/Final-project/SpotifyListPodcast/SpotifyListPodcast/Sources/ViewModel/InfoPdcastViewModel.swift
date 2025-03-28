@@ -8,12 +8,26 @@
 import Foundation
 
 class InfoPdcastViewModel: ObservableObject {
-
-    internal init(service: any PodcastServiceProtocol = PodcastService()) {
+   
+    internal init(
+//        selectedPodcast: PodcastViewModel.PodcastRow,
+        service: any PodcastServiceProtocol = PodcastService()
+    ) {
+//        self.selectedPodcast = selectedPodcast
         self.service = service
-        self.podcastResult = podcastResult
-        self.rowsInfo = rowsInfo
     }
+    
+    
+//    init (podcast: PodcastViewModel){
+//        self.service = podcast.service
+//        self.rowsInfo = podcast.rows
+//    }
+
+//    internal init(service: any PodcastServiceProtocol = PodcastService()) {
+//        self.service = service
+//        self.podcastResult = podcastResult
+//        self.rowsInfo = rowsInfo
+//    }
 
     enum PodcastImage: Hashable  {
         case remoute (URL)
@@ -26,10 +40,11 @@ class InfoPdcastViewModel: ObservableObject {
         let image: PodcastImage
         let description: String
         let duration: Int
-        let data: Data
+//        let data: Data
     }
 
-
+//    let selectedPodcast:PodcastViewModel.PodcastRow
+    
     let service:PodcastServiceProtocol
     @Published var podcastResult: PodcastResponse? {
         willSet{
@@ -37,7 +52,7 @@ class InfoPdcastViewModel: ObservableObject {
         }
     }
 
-    @Published var rowsInfo:[PodcastRowInfo] = []
+    @Published var rowsInfo:PodcastRowInfo?
 
     func procesResult(dataObject:PodcastResponse) -> [PodcastRowInfo] {
 
@@ -61,8 +76,8 @@ class InfoPdcastViewModel: ObservableObject {
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
-                duration: durationMinutes,
-                data: episodData.entity?.data?.data?.isoString ?? Data()
+                duration: durationMinutes
+//                data: episodData.entity?.data?.data?.isoString ?? Data()
             )
         }
         ?? []
@@ -71,11 +86,13 @@ class InfoPdcastViewModel: ObservableObject {
     func queryChange() {
         Task {
             do {
+               
                 let result = try await service.fetchData()
                 let infoRows = procesResult(dataObject: result)
                 await MainActor.run {
                     podcastResult = result
-                    self.rowsInfo = infoRows
+
+//                    self.rowsInfo = infoRows
                 }
             } catch {
                 print("Помилка завантаження: \(error.localizedDescription)")

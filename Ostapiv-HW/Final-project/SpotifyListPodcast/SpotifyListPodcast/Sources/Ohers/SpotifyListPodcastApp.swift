@@ -12,26 +12,38 @@ struct SpotifyListPodcastApp: App {
     
     @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     
-    init() {
-        updateAppearance()
-    }
-    
+//    init() {
+//        updateAppearance()
+//    }
+//    
     var body: some Scene {
         WindowGroup {
+            //            NavigationStack{
             TabView {
-                MainView()
-                    .tabItem {
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
-                    .onAppear {
-                        updateAppearance()
-                    }
-                ContentView()
-                    .tabItem {
-                        Image(systemName: "music.note.list")
-                        Text("Podcasts")
-                    }
+                NavigationStack{
+                    MainView()
+                        .navigationDestination(for: PodcastViewModel.PodcastRow.self) { podcast in
+//                            let infoViewModel = InfoPdcastViewModel(selectedPodcast: podcast)
+                            InfoPodcastView(podcast: podcast)
+                        }
+                }
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                }
+                .onAppear {
+//                    updateAppearance()
+                }
+                NavigationStack{
+                    ListPodcast()
+                        .navigationDestination(for: PodcastViewModel.PodcastRow.self) { podcast in
+                            InfoPodcastView(podcast: podcast)
+                        }
+                }
+                .tabItem {
+                    Image(systemName: "music.note.list")
+                    Text("Podcasts")
+                }
                 SearchView()
                     .tabItem {
                         Image(systemName: "magnifyingglass")
@@ -43,14 +55,18 @@ struct SpotifyListPodcastApp: App {
                         Text("Account")
                     }
             }
-        }
-    }
-    
-    
-    private func updateAppearance() {
-        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = windowScene.windows.first {
-            window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+            //                .navigationDestination(for: PodcastViewModel.PodcastRow.self) { podcast in
+            //                    InfoPodcastView(podcast: podcast)
+            //                }
         }
     }
 }
+
+//
+//private func updateAppearance() {
+//    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//       let window = windowScene.windows.first {
+//        window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+//    }
+//}
+
