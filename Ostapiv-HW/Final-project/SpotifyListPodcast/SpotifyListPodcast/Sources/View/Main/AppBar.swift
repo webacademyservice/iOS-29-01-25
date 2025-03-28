@@ -17,14 +17,6 @@ struct AppBar: View {
             
             Spacer()
             
-            Text("Онлайн режим")
-                .font(.body)
-                .padding(.trailing, 4)
-            
-            Toggle(isOn: .constant(true)) {
-                
-            }
-            .labelsHidden()
         }
         .padding(.trailing, 2)
     }

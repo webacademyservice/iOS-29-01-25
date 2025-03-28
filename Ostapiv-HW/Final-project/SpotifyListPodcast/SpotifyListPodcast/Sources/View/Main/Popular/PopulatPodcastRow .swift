@@ -18,7 +18,10 @@ struct PopulatPodcastRow: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack{
                         ForEach(viewModel.rows) { podcast in
-                            PopularItem(podcast: podcast)  // Передаємо кожен подкаст в PopularItem
+                            NavigationLink(value: podcast){
+                                PopularItem(podcast: podcast)  // Передаємо кожен подкаст в PopularItem
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                     .frame(height: 185)

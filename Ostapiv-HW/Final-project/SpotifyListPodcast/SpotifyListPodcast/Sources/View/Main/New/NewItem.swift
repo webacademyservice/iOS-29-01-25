@@ -38,6 +38,7 @@ struct NewItem: View {
                         .padding(.bottom,8)
                     Text(podcast.description)
                         .font(.caption)
+                        .foregroundColor(Color(red: 98/255.0, green: 98/255.0, blue: 98/255.0))
                         .lineLimit(2)
                 }
                 Spacer()
@@ -53,6 +54,7 @@ struct NewItem: View {
         title: "This is a description of the sample podcast.",
         image: .local("photo"),
         description: "This is a description of the sample podcast. This is a description of the sample podcast.This is a description of the sample podcast.",
-        duration: 60
+        duration: 60,
+        releaseDate: "01.01.0001"
     ))
 }

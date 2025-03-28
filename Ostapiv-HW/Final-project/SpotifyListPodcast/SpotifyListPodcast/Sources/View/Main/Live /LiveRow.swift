@@ -21,9 +21,12 @@ struct LiveRow: View {
                     .fontWeight(.bold)
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHGrid(rows: rows, spacing: 16){
-                            ForEach(viewModel.rows) { podcast in
+                        ForEach(viewModel.rows) { podcast in
+                            NavigationLink(value: podcast){
                                 LiveItem(podcast: podcast)
                             }
+                            .buttonStyle(.plain)
+                        }
                     }
                     .frame(height: 260)
                 }

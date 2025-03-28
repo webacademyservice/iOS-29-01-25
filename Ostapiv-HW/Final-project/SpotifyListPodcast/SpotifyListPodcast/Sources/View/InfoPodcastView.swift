@@ -11,7 +11,7 @@ import Kingfisher
 
 
 struct InfoPodcastView: View {
-    @ObservedObject var ViewModel = InfoPdcastViewModel()
+    @ObservedObject var viewModel = InfoPdcastViewModel()
     let podcast: PodcastViewModel.PodcastRow
     
     var body: some View {
@@ -49,7 +49,7 @@ struct InfoPodcastView: View {
                         Text("\(podcast.duration) хв")
                             .font(.system(size: 14))
                         Spacer()
-                        Text("25.01.2025")
+                        Text("-")
                             .font(.system(size: 14))
                     }
                 }
@@ -105,7 +105,7 @@ struct InfoPodcastView: View {
             }
             .padding()
         .onAppear {
-            ViewModel .queryChange() 
+            viewModel.queryChange() 
         }
     }
     
@@ -116,6 +116,7 @@ struct InfoPodcastView: View {
         title: "Sample Podcast",
         image: .local("photo"),
         description: "This is a description of the sample podcast.",
-        duration: 60
+        duration: 60,
+        releaseDate: "01.01.0001"
     ))
 }
