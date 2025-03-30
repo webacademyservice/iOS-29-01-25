@@ -27,4 +27,10 @@ class CacheManager {
             UserDefaults.standard.set(encodedData, forKey: cacheKey)
         }
     }
+    
+    func updateCache(data: PodcastResponse) {
+           saveToCache(data: data)
+           print("Кеш оновлено!")
+       }
+    
 }
