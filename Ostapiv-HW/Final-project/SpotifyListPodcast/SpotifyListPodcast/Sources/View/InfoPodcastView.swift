@@ -7,11 +7,13 @@
 
 import SwiftUI
 import Kingfisher
+import AVKit
 
 
 
 struct InfoPodcastView: View {
-    @ObservedObject var viewModel = InfoPdcastViewModel()
+//    @ObservedObject var viewModel = InfoPdcastViewModel()
+    @ObservedObject var viewModel = PodcastViewModel()
     let podcast: PodcastViewModel.PodcastRow
     
     var body: some View {
@@ -75,7 +77,7 @@ struct InfoPodcastView: View {
                         Spacer()
                         
                         Button(action: {
-                            print("Кнопка натиснута")
+                            viewModel.playAudio(from: podcast.audioPreview)
                         }) {
                             
                             HStack {
@@ -107,8 +109,14 @@ struct InfoPodcastView: View {
         .onAppear {
             viewModel.queryChange() 
         }
+     .sheet(isPresented: $viewModel.isPlayerPresented) {
+        if let player = viewModel.player {
+            AudioPlayerView(player: player)
+        }
     }
-    
+    }
+        
+
 }
 
 #Preview {
@@ -117,6 +125,7 @@ struct InfoPodcastView: View {
         image: .local("photo"),
         description: "This is a description of the sample podcast.",
         duration: 60,
-        releaseDate: "01.01.0001"
+        releaseDate: "01.01.0001",
+        audioPreview: "-"
     ))
 }

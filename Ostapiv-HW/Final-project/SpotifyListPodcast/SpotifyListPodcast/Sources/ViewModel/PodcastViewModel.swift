@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import AVKit
 
 class PodcastViewModel: ObservableObject {
+    @Published var isPlayerPresented = false
+    @Published var errorMessage: String?
+    var player: AVPlayer?
     
     internal init(service: any PodcastServiceProtocol = PodcastService()) {
         self.service = service
@@ -20,6 +24,8 @@ class PodcastViewModel: ObservableObject {
         case local (String)
     }
     
+    
+    
     struct PodcastRow: Identifiable, Hashable {
         let id = UUID()
         let title: String
@@ -27,9 +33,12 @@ class PodcastViewModel: ObservableObject {
         let description: String
         let duration: Int
         let releaseDate: String
+        let audioPreview: String
         
     }
+    
     let service:PodcastServiceProtocol
+    
     @Published var podcastResult: PodcastResponse?
     {
         willSet{
@@ -62,24 +71,41 @@ class PodcastViewModel: ObservableObject {
             let formattedDate = ISO8601DateFormatter()
                 .date(from: releaseDateIosString)
                 .map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .short) }
-                ?? "Invalid date format"
+            ?? "Invalid date format"
             
+            // audio
+            let audioLink = episodData.entity?.data?.audioPreview?.url ?? "-"
             
             return PodcastRow(
                 title: episodData.entity?.data?.name ?? "-",
                 image: image,
                 description: episodData.entity?.data?.description ?? "-",
                 duration: durationMinutes,
-                releaseDate: formattedDate
+                releaseDate: formattedDate,
+                audioPreview: audioLink
+                
             )
         }
         ?? []
+    }
+    
+    // audio
+    func playAudio(from urlString: String) {
+        guard let url = URL(string: urlString), urlString != "-" else {
+            print("Невірний URL для аудіо")
+            return
+        }
+        
+        player = AVPlayer(url: url)
+        player?.play()
+        isPlayerPresented = true
     }
     
     func queryChange() {
         Task {
             do {
                 let result = try await service.fetchData()
+                //                     CacheManager.shared.updateCache(data: result)
                 let newRows = procesResult(dataObject: result)
                 await MainActor.run {
                     self.rows = newRows

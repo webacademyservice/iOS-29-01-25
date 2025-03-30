@@ -20,7 +20,7 @@ struct LiveRow: View {
                     .font(.title2)
                     .fontWeight(.bold)
                 ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHGrid(rows: rows, spacing: 16){
+                    LazyHGrid(rows: rows, spacing: 8){
                         ForEach(viewModel.rows) { podcast in
                             NavigationLink(value: podcast){
                                 LiveItem(podcast: podcast)
