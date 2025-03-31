@@ -9,9 +9,14 @@ import Foundation
 import AVKit
 
 class PodcastViewModel: ObservableObject {
+    
     @Published var isPlayerPresented = false
     @Published var errorMessage: String?
     var player: AVPlayer?
+    
+    private let cacheManager = CacheManager.shared  // Додаємо CacheManager для кешування
+    private let service: PodcastServiceProtocol
+    private let cacheKey = "cachedPodcasts"
     
     internal init(service: any PodcastServiceProtocol = PodcastService()) {
         self.service = service
@@ -37,7 +42,7 @@ class PodcastViewModel: ObservableObject {
         
     }
     
-    let service:PodcastServiceProtocol
+    // let service:PodcastServiceProtocol
     
     @Published var podcastResult: PodcastResponse?
     {
@@ -101,19 +106,51 @@ class PodcastViewModel: ObservableObject {
         isPlayerPresented = true
     }
     
-    func queryChange() {
+    func loadData() {
         Task {
             do {
-                let result = try await service.fetchData()
-                //                     CacheManager.shared.updateCache(data: result)
-                let newRows = procesResult(dataObject: result)
-                await MainActor.run {
-                    self.rows = newRows
+                // Перевіряємо, чи є кешовані дані
+                if let cachedData = try await cacheManager.loadCachedData() {
+                    let newRows = procesResult(dataObject: cachedData)
+                    await MainActor.run {
+                        self.rows = newRows
+                    }
+                    print("Дані завантажено з кешу.")
+                } else {
+                    print("Немає кешованих даних, завантажуємо з API.")
+                    await fetchPodcastsFromAPI()
                 }
             } catch {
-                print("Помилка завантаження: \(error.localizedDescription)")
+                print("Помилка завантаження з кешу: \(error.localizedDescription)")
+                await fetchPodcastsFromAPI() // Якщо не вдалося завантажити з кешу, намагаємося знову з API
             }
         }
     }
+    
+    // Завантажуємо дані з API
+    func fetchPodcastsFromAPI() async {
+        
+        do {
+            let result = try await service.fetchData()
+            let newRows = procesResult(dataObject: result)
+            await MainActor.run {
+                self.rows = newRows
+            }
+            
+            // Оновлюємо кеш після завантаження з API
+            try await cacheManager.saveToCache(data: result)
+            print("Дані завантажено з API та кешовано.")
+        } catch {
+            errorMessage = "Помилка завантаження даних з API: \(error.localizedDescription)"
+            print("Помилка завантаження з API: \(error.localizedDescription)")
+        }
+    }
+    
+    // Відслідковуємо зміну запиту для оновлення даних
+    func queryChange() {
+        loadData()
+    }
+    
+    
     
 }

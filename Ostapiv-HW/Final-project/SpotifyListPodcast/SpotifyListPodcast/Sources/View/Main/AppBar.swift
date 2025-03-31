@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppBar: View {
-   
+    @ObservedObject var viewModel = PodcastViewModel()
     var body: some View {
         HStack{
             Image("logo")
@@ -18,7 +18,10 @@ struct AppBar: View {
             
             Spacer()
             Button(action: {
-//                CacheManager.shared.updateCache(data: )
+                Task{
+                    await viewModel.fetchPodcastsFromAPI()
+                }
+               
             }) {
                 Text("Update")
             }
