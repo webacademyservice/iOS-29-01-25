@@ -16,21 +16,17 @@ class CacheManager {
     
     /// Завантаження кешованих даних
     
-    func loadCachedData() throws -> PodcastResponse? {
+    func loadCachedData() async throws -> PodcastResponse? {
         guard let cachedData = UserDefaults.standard.data(forKey: cacheKey) else { return nil }
         return try JSONDecoder().decode(PodcastResponse.self, from: cachedData)
     }
     
     /// Збереження даних у кеш
-    func saveToCache(data: PodcastResponse) {
-        if let encodedData = try? JSONEncoder().encode(data){
-            UserDefaults.standard.set(encodedData, forKey: cacheKey)
+    func saveToCache(data: PodcastResponse) async throws {
+        let encodedData = try JSONEncoder().encode(data)
+               UserDefaults.standard.set(encodedData, forKey: cacheKey)
         }
     }
     
-    func updateCache(data: PodcastResponse) {
-           saveToCache(data: data)
-           print("Кеш оновлено!")
-       }
-    
-}
+
+
