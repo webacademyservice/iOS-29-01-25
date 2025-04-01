@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct SpotifyListPodcastApp: App {
     
-    
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     
     var body: some Scene {
         WindowGroup {
@@ -22,10 +22,12 @@ struct SpotifyListPodcastApp: App {
                             InfoPodcastView(podcast: podcast)
                         }
                 }
+                
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
                 }
+                
                 
                 NavigationStack{
                     ListPodcast()
@@ -49,8 +51,11 @@ struct SpotifyListPodcastApp: App {
                         Text("Account")
                     }
             }
+            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
+    
+    
 }
 
 
