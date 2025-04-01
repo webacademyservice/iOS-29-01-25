@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountBar: View {
 
-    @AppStorage("isDarkMode") private var isDarkMode:Bool = false
+    @AppStorage("isDarkMode") private var isDarkMode: Bool = false
     var body: some View {
         HStack{
             Text("Dark mode")
@@ -21,19 +21,19 @@ struct AccountBar: View {
                 .labelsHidden()
         }
         .padding(.trailing, 2)
-        .onChange(of: isDarkMode) {
-            updateAppearance()
-        }
+//        .onChange(of: isDarkMode) {
+//            updateAppearance()
+//        }
        
     }
     
-    private func updateAppearance() {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
-            }
-        }
-}
+//    private func updateAppearance() {
+//        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//           let window = windowScene.windows.first {
+//            window.overrideUserInterfaceStyle = isDarkMode ? .dark : .light
+//        }
+    }
+//}
 
 
 

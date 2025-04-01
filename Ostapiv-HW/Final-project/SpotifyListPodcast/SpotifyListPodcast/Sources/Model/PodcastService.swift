@@ -9,7 +9,6 @@ import Foundation
 // Сервіс для передачі списку підкастів (PodcastService)
 class PodcastService: ObservableObject, PodcastServiceProtocol {
     
-    //  @Published var podcastResponse: PodcastResponse?
     
     struct PodcastServiceError: Error {
         let reason: String
@@ -21,11 +20,6 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
     
     
     func fetchData() async throws -> PodcastResponse {
-//         Спочатку пробуємо отримати кешовані дані
-//        if let cachedData = try CacheManager.shared.loadCachedData() {
-//            return cachedData
-//        }
-//        
         guard let url = URL(string: requestPath) else {
             throw PodcastServiceError(reason: "Не можу зробити URL від \(requestPath)")
         }
@@ -42,8 +36,6 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
         let data = response.0
         
         let decodedResponse = try JSONDecoder().decode(PodcastResponse.self, from: data) // перетворили JSON дані на модель
-        
-//        CacheManager.shared.saveToCache(data: decodedResponse)
         
         return decodedResponse // передача ддя виводу на екран
         
