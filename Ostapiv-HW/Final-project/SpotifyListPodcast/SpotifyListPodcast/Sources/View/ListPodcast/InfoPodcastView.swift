@@ -51,7 +51,7 @@ struct InfoPodcastView: View {
                         Text("\(podcast.duration) хв")
                             .font(.system(size: 14))
                         Spacer()
-                        Text("-")
+                        Text(podcast.releaseDate)
                             .font(.system(size: 14))
                     }
                 }
