@@ -75,7 +75,7 @@ class PodcastViewModel: ObservableObject {
             let releaseDateIosString = episodData.entity?.data?.releaseDate?.isoString ?? "-"
             let formattedDate = ISO8601DateFormatter()
                 .date(from: releaseDateIosString)
-                .map { DateFormatter.localizedString(from: $0, dateStyle: .medium, timeStyle: .short) }
+                .map { DateFormatter.localizedString(from: $0, dateStyle: .short, timeStyle: .none) }
             ?? "Invalid date format"
             
             // audio
