@@ -15,7 +15,7 @@ class PodcastService: ObservableObject, PodcastServiceProtocol {
     }
     
     let requestPath = "https://spotify23.p.rapidapi.com/podcast_episodes/?id=0ofXAdFIQQRsCYj9754UFx&offset=0&limit=50"
-    private let apiKey = "315774d55emsh81ccc97687857eep19a986jsne4d92bec7e03"
+    private let apiKey = "1578655d4emsh8eeb7f79d494a91p187668jsn99278f89eb29"
     private let apiHost = "spotify23.p.rapidapi.com"
     
     
