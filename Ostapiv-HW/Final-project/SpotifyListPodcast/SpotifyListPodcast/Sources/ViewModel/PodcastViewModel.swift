@@ -42,8 +42,6 @@ class PodcastViewModel: ObservableObject {
         
     }
     
-    // let service:PodcastServiceProtocol
-    
     @Published var podcastResult: PodcastResponse?
     {
         willSet{
